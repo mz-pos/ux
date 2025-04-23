@@ -1,33 +1,81 @@
-# `Turborepo` Vite starter
+# mz-repo (Monorepo Setup)
 
-This is a community-maintained example. If you experience a problem, please submit a pull request with a fix. GitHub Issues will be closed.
+본 프로젝트는 [pnpm](https://pnpm.io/)과 [Turborepo](https://turbo.build/)를 기반으로 구성된 **Monorepo 개발 환경**입니다.  
+프론트엔드 앱은 Vite + Vue 3 기반으로 작성되며, 공통 UI 컴포넌트와 설정은 `packages/`에서 공유합니다.
 
-## Using this example
+---
 
-Run the following command:
+## Monorepo 구조
 
-```sh
-npx create-turbo@latest -e with-vite
+```txt
+mz-repo/
+├── apps/                   # 실행 가능한 애플리케이션 모음
+│   └── my-new-app/         # Vue 3 + Vite 앱
+│
+├── packages/               # 재사용 가능한 패키지 (UI, utils 등)
+│   └── ui/                 # 공통 UI 컴포넌트
+│
+├── .github/                # GitHub Actions 등 설정
+├── .vscode/                # 프로젝트 공통 개발 환경 설정
+├── .gitignore
+├── pnpm-workspace.yaml     # 워크스페이스 구성
+├── turbo.json              # Turborepo 실행 전략 설정
+└── README.md
 ```
 
-## What's inside?
+## 주요 기술 스택
+- Monorepo 관리: Turborepo
+- 패키지 매니저: pnpm
+- 프레임워크: Vue 3 + Vite
+- 컴포넌트 공유: packages/ui
+- Storybook: @storybook/vue3-vite
 
-This Turborepo includes the following packages and apps:
+## 설치 및 실행
 
-### Apps and Packages
+1. 루트에서 의존성 설치
+```
+pnpm install
+```
 
-- `docs`: a vanilla [vite](https://vitejs.dev) ts app
-- `web`: another vanilla [vite](https://vitejs.dev) ts app
-- `@repo/ui`: a stub component & utility library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: shared `eslint` configurations
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+2. 전체 앱 실행
 
-Each package and app is 100% [TypeScript](https://www.typescriptlang.org/).
+```
+pnpm run dev
+```
 
-### Utilities
+3. 특정 앱만 실행 (예: new-app)
+```
+pnpm --filter new-app run dev
+```
+or
+```
+cd apps/new-app
+pnpm run dev
+```
 
-This Turborepo has some additional tools already setup for you:
+4. Storybook 실행
+```
+pnpm --filter @mz/ui run storybook
+```
+or
+```
+cd packages/ui
+pnpm run dev
+```
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+## 새 앱 추가 방법
+```
+pnpm create vite apps/new-app
+cd apps/new-app
+pnpm install
+pnpm run dev
+```
+
+## 터보 명령어 예시
+
+```
+pnpm turbo run dev          # 모든 패키지 run
+pnpm turbo run build          # 모든 패키지 build
+pnpm turbo run lint --filter=new-app
+
+```
