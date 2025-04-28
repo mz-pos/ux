@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import './header.css';
+import '../stories/header.css';
 import MyButton from './Button.vue';
 defineProps<{ user: { name: string } | null }>();
 
