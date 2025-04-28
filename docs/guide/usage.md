@@ -48,9 +48,6 @@ pnpm --filter new-app run dev
 
 ::: tip
 루트의 package.json에 scripts를 추가해서 명령어를 단축할수 있음. 
-`"apps:new-app : "pnpm --filter @repo/ui storybook",`을 추가하면 
+`"apps:new-app : "pnpm --filter new-app run dev"`을 추가하면 
 npm run  apps:new-app으로 루트에서 실행가능.
 :::
-
-
->
