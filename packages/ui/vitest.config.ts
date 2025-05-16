@@ -1,9 +1,9 @@
 import path from 'node:path'
+import fs from 'fs'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitest/config'
 import { storybookTest } from '@storybook/experimental-addon-test/vitest-plugin'
 import vue from '@vitejs/plugin-vue'
-import fs from 'fs'
 
 // Copy index.html to 404.html after build
 function spaFallback() {
