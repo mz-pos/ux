@@ -5,9 +5,8 @@ on:
     # `master` 브랜치를 대상으로 하는 푸시에서 실행됩니다.
     branches: [master]
 
-  # Actions 탭에서 이 워크플로우를 수동으로 실행할 수 있게 합니다.
-  workflow_dispatch:
-
+permissions:
+  contents: write
 
 jobs:
   deploy:
