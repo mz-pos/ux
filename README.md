@@ -1,5 +1,7 @@
 ## 프로젝트 가이드 설치 및 실행
 
+node version : 18.x이상 필요.
+
 ### 1. 루트에서 의존성 설치
 ```shell
 npm install -g pnpm
