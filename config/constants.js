@@ -1,1 +1,1 @@
-export const BASE_REPOSITORY_NAME_PATH = '/ux/';
+export const BASE_REPOSITORY_NAME_PATH = '/';
