@@ -29,14 +29,18 @@ jobs:
 
       - run: pnpm install
 
-      # ---------- Build 단계 ----------
+      # ---------- app 개별 Build 단계 ----------
       # Build test (Vue)
       - name: Build test app
         run:  pnpm --filter test run build
 
-      # Build web (Vue)
+      # Build new-app (Vue)
       - name: Build new-app app
         run:  pnpm --filter new-app run build
+
+      # Build web (Vue)
+      - name: Build web app
+        run:  pnpm --filter web run build
 
       # Build storybook
       - name: Build with Storybook
@@ -46,17 +50,18 @@ jobs:
       - name: Build with VitePress
         run:  pnpm vitepress build docs
 
-      # ---------- 합본 ----------
-      # Copy outputs into one dist folder
+      # gh-pages에 올릴 구조 만들기
       - name: Compose gh-pages folder
         run: |
           rm -rf dist
           mkdir -p dist/test
           mkdir -p dist/new-app
+          mkdir -p dist/web
           mkdir -p dist/storybook
           mkdir -p dist/docs
           cp -r apps/test/dist/* dist/test
           cp -r apps/new-app/dist/* dist/new-app
+          cp -r apps/web/dist/* dist/web
           cp -r packages/ui/storybook-static/* dist/storybook
           cp -r docs/.vitepress/dist/* dist/docs
 
@@ -67,3 +72,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: ./dist
+          cname: ux.team.gd
