@@ -21,6 +21,6 @@ export default defineConfig(({mode}) => {
     const env = loadEnv(mode, process.cwd())
     return {
         plugins: [spaFallback()],
-        base: env.VITE_BASE + 'web/',
+        base: env.VITE_BASE,
     }
 })
