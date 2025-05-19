@@ -4,7 +4,7 @@ import fs from 'fs'
 
 export default defineConfig(({mode}) =>  {
     const env = loadEnv(mode, process.cwd())
-
+    console.log({env, mode})
     return {
         title: 'mz-repo 문서',
         description: 'pnpm + turborepo + vue 기반 monorepo 문서',

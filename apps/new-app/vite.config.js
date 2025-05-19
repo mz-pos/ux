@@ -19,7 +19,8 @@ function spaFallback() {
 
 // https://vite.dev/config/
 export default defineConfig(({mode}) => {
-  const env = loadEnv(mode, process.cwd())
+  const rootDir = resolve(__dirname, '../../')
+  const env = loadEnv(mode, rootDir)
   return {
     plugins: [vue(), spaFallback()],
     base: env.VITE_BASE_NEW_APP,
