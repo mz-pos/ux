@@ -51,6 +51,7 @@ export default defineConfig(({mode}) =>  {
                     text: 'github pages 배포하기',
                     items: [
                         { text: '다중 페이지 배포 가이드', link: '/pages/' },
+                        { text: 'new app 배포시 ', link: '/pages/' },
                     ]
                 }
             ],

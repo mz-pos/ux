@@ -2,10 +2,6 @@
 
 하나의 GitHub 저장소에서 여러 Vite 기반 앱을 서브 폴더 경로로 GitHub Pages에 배포하는 방법을 설명
 
-- https://mz-pos.github.io/ux/storybook/?path=/docs/example-button--docs
-- https://mz-pos.github.io/ux/docs/getting-started.html
-- https://mz-pos.github.io/ux/new-app/
-
 ## 1. 프로젝트 구조
 
 ```text
@@ -24,12 +20,12 @@ repo-root/
 │   └── .vitepress/
 │       └── config.js           # config 설정
 │
-├── config/
-│   └── constants.js            # base path 설정
-│
 ├── .github/
 │   └── workflows/
 │       └── deploy.yml          # GitHub Actions 설정
+│
+├── .env                        # github domain base path 설정
+├── .env.custom                 # custom domain base path 설정
 └── package.json
 ```
 
@@ -82,6 +78,10 @@ jobs:
 
       - run: pnpm install
 
+      # 빌드 전에 사용할 환경 변수를 세팅하는 단계
+      - name: Copy custom env
+        run: cp .env.custom .env
+
       # ---------- app 개별 Build 단계 ----------
       # Build test (Vue)
       - name: Build test app
@@ -128,9 +128,6 @@ jobs:
           cname: ux.team.gd #커스텀 도메인 설정
 ```
 
-커스텀 도메인 설정시 유의사항 
-
-
 ##  GitHub Pages 설정 (repository 설정)
 1. GitHub로 이동
 2. Settings > Pages 메뉴 이동
@@ -142,9 +139,36 @@ jobs:
 ![img.png](img.png)
 
 
+## 배포 확인
+
+![img_1.png](img_1.png)
+
+
+git에 gh-pages 브랜치에 빌드된 파일들이 자동으로 업로드되고 배포됨.
+
 ## 최종 접속 주소
+::: warning
+기본 GitHub Pages 도메인과 커스텀 도메인을 동시에 사용할 수는 없음.
+
+git domain을 사용하고 싶다면 deploy.yml에서 cname: ux.team.gd 부분 제거.
+:::
+
+git domain 
+
 ```text
 https://<your-username>.github.io/<repositoryName>/app1/
-https://<your-username>.github.io/<repositoryName>/app2/
 ```
-예 : https://mjeom1.github.io/ux/new-app/
+- https://mz-pos.github.io/ux/storybook/?path=/docs/example-button--docs
+- https://mz-pos.github.io/ux/docs/getting-started.html
+- https://mz-pos.github.io/ux/new-app/
+
+or
+
+custom domain
+
+- https://ux.team.gd/storybook/?path=/docs/example-button--docs
+- https://ux.team.gd/ux/docs/getting-started.html
+- https://ux.team.gd/ux/new-app/
+
+
+
