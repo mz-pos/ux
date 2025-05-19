@@ -168,8 +168,8 @@ or
 custom domain
 
 - https://ux.team.gd/storybook/?path=/docs/example-button--docs
-- https://ux.team.gd/ux/docs/getting-started.html
-- https://ux.team.gd/ux/new-app/
+- https://ux.team.gd/docs/getting-started.html
+- https://ux.team.gd/new-app/
 
 
 

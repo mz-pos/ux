@@ -8,7 +8,7 @@ export default defineConfig(({mode}) =>  {
     return {
         title: 'mz-repo 문서',
         description: 'pnpm + turborepo + vue 기반 monorepo 문서',
-        base: env.VITE_BASE + 'docs/',
+        base: env.VITE_BASE_DOCS,
         vite: {
             plugins: [
                 {

@@ -29,7 +29,7 @@ export default defineConfig(({mode}) => {
 
   return {
     plugins: [vue(), spaFallback()],
-    base: env.VITE_BASE + 'storybook/',
+    base: env.VITE_BASE_STORYBOOK,
     test: {
       workspace: [
         {

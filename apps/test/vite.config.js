@@ -21,6 +21,6 @@ export default defineConfig(({mode}) => {
   const env = loadEnv(mode, process.cwd())
   return {
     plugins: [vue(), spaFallback()],
-    base: env.VITE_BASE + 'test/',
+    base: env.VITE_BASE_TEST,
   }
 })
