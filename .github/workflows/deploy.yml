@@ -29,6 +29,9 @@ jobs:
 
       - run: pnpm install
 
+      - name: Copy custom env
+        run: cp .env.custom .env
+
       # ---------- app 개별 Build 단계 ----------
       # Build test (Vue)
       - name: Build test app
@@ -72,4 +75,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: ./dist
-          cname: ux.team.gd
+          cname: ux.team.gd #커스텀 도메인 설정

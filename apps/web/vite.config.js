@@ -1,7 +1,6 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import { resolve } from 'path'
 import * as fs from 'fs';
-import {BASE_REPOSITORY_NAME_PATH} from '../../config/constants.js'
 
 // Copy index.html to 404.html after build
 function spaFallback() {
@@ -17,8 +16,11 @@ function spaFallback() {
     }
 }
 
-// https://vite.dev/config/
-export default defineConfig({
-    plugins: [spaFallback()],
-    base: BASE_REPOSITORY_NAME_PATH + 'web/',
+
+export default defineConfig(({mode}) => {
+    const env = loadEnv(mode, process.cwd())
+    return {
+        plugins: [spaFallback()],
+        base: env.VITE_BASE + 'web/',
+    }
 })

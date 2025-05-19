@@ -1,0 +1,150 @@
+# github pages 배포
+
+하나의 GitHub 저장소에서 여러 Vite 기반 앱을 서브 폴더 경로로 GitHub Pages에 배포하는 방법을 설명
+
+- https://mz-pos.github.io/ux/storybook/?path=/docs/example-button--docs
+- https://mz-pos.github.io/ux/docs/getting-started.html
+- https://mz-pos.github.io/ux/new-app/
+
+## 1. 프로젝트 구조
+
+```text
+repo-root/
+├── apps/
+│   ├── app1/                   
+│       └── vite.config.js      # config 설정
+│   └── app2/                  
+│       └── vite.config.js      # config 설정
+│
+├── packages/                   
+│   └── ui/                
+│       └── vitest.config.js      # config 설정 
+│
+├── docs/                       
+│   └── .vitepress/
+│       └── config.js           # config 설정
+│
+├── config/
+│   └── constants.js            # base path 설정
+│
+├── .github/
+│   └── workflows/
+│       └── deploy.yml          # GitHub Actions 설정
+└── package.json
+```
+
+## 2. 각 앱에 config 설정 (base 경로 지정)
+각 앱의 config.ts 또는 config.js에 base 경로를 지정해야 합니다.
+예: apps/app1/vite.config.ts
+
+```text
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+
+export default defineConfig({
+  plugins: [vue()],
+  base: '/<repositoryName>/app1/', // 반드시 `/repositoryName/appName/`
+})
+```
+
+## GitHub Actions 설정 (deploy.yml)
+.github/workflows/deploy.yml 파일을 만들어 아래와 같이 설정합니다:
+
+```text
+name: Deploy GitHub Pages (multi-app)
+
+on:
+  push:
+    # `master` 브랜치를 대상으로 하는 푸시에서 실행됩니다.
+    branches: [master]
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # PNPM & Node
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies (PNPM)
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - run: pnpm install
+
+      # ---------- app 개별 Build 단계 ----------
+      # Build test (Vue)
+      - name: Build test app
+        run:  pnpm --filter test run build
+
+      # Build new-app (Vue)
+      - name: Build new-app app
+        run:  pnpm --filter new-app run build
+
+      # Build web (Vue)
+      - name: Build web app
+        run:  pnpm --filter web run build
+
+      # Build storybook
+      - name: Build with Storybook
+        run:  pnpm --filter @repo/ui build-storybook
+
+      # Build vitepress
+      - name: Build with VitePress
+        run:  pnpm vitepress build docs
+
+      # gh-pages에 올릴 구조 만들기
+      - name: Compose gh-pages folder
+        run: |
+          rm -rf dist
+          mkdir -p dist/test
+          mkdir -p dist/new-app
+          mkdir -p dist/web
+          mkdir -p dist/storybook
+          mkdir -p dist/docs
+          cp -r apps/test/dist/* dist/test
+          cp -r apps/new-app/dist/* dist/new-app
+          cp -r apps/web/dist/* dist/web
+          cp -r packages/ui/storybook-static/* dist/storybook
+          cp -r docs/.vitepress/dist/* dist/docs
+
+      # ---------- GitHub Pages 배포 ----------
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./dist
+          cname: ux.team.gd #커스텀 도메인 설정
+```
+
+커스텀 도메인 설정시 유의사항 
+
+
+##  GitHub Pages 설정 (repository 설정)
+1. GitHub로 이동
+2. Settings > Pages 메뉴 이동
+3. Source:
+- Deploy from a branch 선택
+4. gh-pages 브랜치
+- 루트 (/) 경로 선택
+
+![img.png](img.png)
+
+
+## 최종 접속 주소
+```text
+https://<your-username>.github.io/<repositoryName>/app1/
+https://<your-username>.github.io/<repositoryName>/app2/
+```
+예 : https://mjeom1.github.io/ux/new-app/
