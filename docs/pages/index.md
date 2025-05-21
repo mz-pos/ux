@@ -25,7 +25,7 @@ repo-root/
 │       └── deploy.yml          # GitHub Actions 설정
 │
 ├── .env                        # github domain base path 설정
-├── .env.custom                 # custom domain base path 설정
+├── .env.production             # custom domain base path 설정
 └── package.json
 ```
 
@@ -37,11 +37,18 @@ repo-root/
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-export default defineConfig({
-  plugins: [vue()],
-  base: '/<repositoryName>/app1/', // 반드시 `/repositoryName/appName/`
+export default defineConfig(({mode}) => {
+    const rootDir = resolve(__dirname, '../../')
+    const env = loadEnv(mode, rootDir)
+    return {
+        plugins: [spaFallback()],
+        base: env.VITE_BASE_APPNAME, //base는 .env & .env.production 에서 관리
+    }
 })
 ```
+
+.env는 git domain에서 사용할 경로 관리 - '/<repositoryName>/app1/'
+env.production는 custom domain에서 사용할 경로 관리 : '/app1/'
 
 ## GitHub Actions 설정 (deploy.yml)
 .github/workflows/deploy.yml 파일을 만들어 아래와 같이 설정합니다:
@@ -166,6 +173,9 @@ https://<your-username>.github.io/<repositoryName>/app1/
 or
 
 custom domain
+```text
+https://<custom-domain>/app1/
+```
 
 - https://ux.team.gd/storybook/?path=/docs/example-button--docs
 - https://ux.team.gd/docs/getting-started.html
