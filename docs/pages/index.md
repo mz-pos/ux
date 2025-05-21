@@ -33,6 +33,19 @@ repo-root/
 각 앱의 config.ts 또는 config.js에 base 경로를 지정해야 합니다.
 예: apps/app1/vite.config.ts
 
+```text
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+
+export default defineConfig(({mode}) => {
+    const rootDir = resolve(__dirname, '../../')
+    const env = loadEnv(mode, rootDir)
+    return {
+        plugins: [vue()],
+        base: env.VITE_BASE_APPNAME, //base는 .env & .env.production 에서 관리
+    }
+})
+```
 
 - .env는 git domain에서 사용할 경로 관리 - '/<repositoryName>/app1/'
 - .env.production는 custom domain에서 사용할 경로 관리 : '/app1/'
@@ -142,11 +155,9 @@ jobs:
 git에 gh-pages 브랜치에 빌드된 파일들이 자동으로 업로드되고 배포됨.
 
 ## 최종 접속 주소
-::: warning
-기본 GitHub Pages 도메인과 커스텀 도메인을 동시에 사용할 수는 없음.
-
-git domain을 사용하고 싶다면 deploy.yml에서 cname: ux.team.gd 부분 제거.
-:::
+> ⚠️ **주의**  
+> 기본 GitHub Pages 도메인과 커스텀 도메인을 동시에 사용할 수는 없습니다.  
+> git domain을 사용하고 싶다면 `deploy.yml`에서 `cname: ux.team.gd` 부분을 제거하세요.
 
 git domain 
 
