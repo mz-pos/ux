@@ -33,19 +33,6 @@ repo-root/
 각 앱의 config.ts 또는 config.js에 base 경로를 지정해야 합니다.
 예: apps/app1/vite.config.ts
 
-```text
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-
-export default defineConfig(({mode}) => {
-    const rootDir = resolve(__dirname, '../../')
-    const env = loadEnv(mode, rootDir)
-    return {
-        plugins: [vue()],
-        base: env.VITE_BASE_APPNAME, //base는 .env & .env.production 에서 관리
-    }
-})
-```
 
 - .env는 git domain에서 사용할 경로 관리 - '/<repositoryName>/app1/'
 - .env.production는 custom domain에서 사용할 경로 관리 : '/app1/'
