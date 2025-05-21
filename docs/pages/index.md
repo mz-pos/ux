@@ -34,7 +34,7 @@ repo-root/
 예: apps/app1/vite.config.ts
 
 ```text
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 export default defineConfig(({mode}) => {
@@ -42,7 +42,7 @@ export default defineConfig(({mode}) => {
     const env = loadEnv(mode, rootDir)
     return {
         plugins: [vue()],
-        base: env.VITE_BASE_APPNAME, //base는 .env & .env.production 에서 관리
+        base: env.VITE_BASE_APPNAME,
     }
 })
 ```
