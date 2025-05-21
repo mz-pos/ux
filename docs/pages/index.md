@@ -47,8 +47,8 @@ export default defineConfig(({mode}) => {
 })
 ```
 
-.env는 git domain에서 사용할 경로 관리 - '/<repositoryName>/app1/'
-env.production는 custom domain에서 사용할 경로 관리 : '/app1/'
+- .env는 git domain에서 사용할 경로 관리 - '/<repositoryName>/app1/'
+- .env.production는 custom domain에서 사용할 경로 관리 : '/app1/'
 
 ## GitHub Actions 설정 (deploy.yml)
 .github/workflows/deploy.yml 파일을 만들어 아래와 같이 설정합니다:
