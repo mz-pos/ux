@@ -34,9 +34,6 @@ repo-root/
 예: apps/app1/vite.config.ts
 
 ```text
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-
 export default defineConfig(({mode}) => {
     const rootDir = resolve(__dirname, '../../')
     const env = loadEnv(mode, rootDir)
